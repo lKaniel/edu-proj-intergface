@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useCallback, useEffect, useState} from 'react';
+import axios from "axios";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [state, setState] = useState({
+        posts: [],
+        tabs: [],
+        active: 0
+    })
+
+    const getData = useCallback(async () => {
+        let request = `http://localhost:4000/getposts`;
+        const posts = await axios.get(request);
+        request = `http://localhost:4000/getpost?id=${state.active}`;
+        const tabs = await axios.get(request);
+
+        setState((prev) => {
+            return {
+                ...prev,
+                posts: posts,
+                tabs: tabs
+            }
+        })
+    }, [state.active])
+
+    useEffect(() => {
+        getData()
+    }, [getData]);
+
+
+    return (
+        <div className="App">
+
+        </div>
+    );
 }
 
 export default App;
