@@ -1,0 +1,42 @@
+.PostWrap {
+  width: 100vw;
+  height: auto;
+  min-height: 100vh;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Post {
+  width: calc(100vw - 400px);
+  background: rgba(0, 0, 0, .05);
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 20px;
+  margin: 100px auto auto;
+
+
+  input {
+    outline: none;
+    border: none;
+  }
+
+  input[type="text"] {
+    background: rgba(0, 0, 0, .05);
+    height: 30px;
+    padding: 40px;
+    font-size: 40px;
+    width: calc(100%);
+    font-weight: 650;
+    color: rgba(0,0,0,.7);
+  }
+
+  input[type="submit"] {
+    width: 100%;
+    height: 300px;
+    cursor: pointer;
+    font-size: 200px;
+    font-weight: 600;
+    color: rgba(0,0,0,.7);
+  }
+}

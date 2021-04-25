@@ -1,0 +1,61 @@
+.Tab{
+  width: calc(100%);
+  min-height: 300px;
+  background: rgba(0,0,0,.05);
+
+  .Add{
+    text-align: center;
+    line-height: 300px;
+    font-size: 50px;
+    font-weight: 650;
+    cursor: pointer;
+    color: rgba(0,0,0,.7);
+    width: 50%;
+    float: left;
+
+    &:hover{
+      background: rgba(0,0,0,.05);
+    }
+  }
+
+  .Add.full{
+    width: 100%;
+    font-size: 200px;
+  }
+
+  input, textarea {
+    outline: none;
+    border: none;
+  }
+
+  .Form{
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  textarea {
+    background: rgba(0, 0, 0, .02);
+    width: calc(100% - 380px);
+    height: 220px;
+    min-height: 220px;
+    max-height: 500px;
+    padding: 40px;
+    font-size: 20px;
+    font-weight: 650;
+    color: rgba(0,0,0,.7);
+    float: left;
+    resize: vertical;
+  }
+
+  input[type="submit"] {
+    background: rgba(0, 0, 0, .0);
+    width: 300px;
+    height: 100%;
+    cursor: pointer;
+    font-size: 200px;
+    font-weight: 600;
+    color: rgba(0,0,0,.7);
+    float: left;
+  }
+}

@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
+import PostsList from "./components/PostsList/PostsList";
 
 function App() {
 
@@ -10,10 +11,13 @@ function App() {
     })
 
     const getData = useCallback(async () => {
-        let request = `http://localhost:4000/getposts`;
-        const posts = await axios.get(request);
-        request = `http://localhost:4000/getpost?id=${state.active}`;
-        const tabs = await axios.get(request);
+        let request = `http://timewars.online:4000/getposts`;
+        const posts = (await axios.get(request)).data;
+        let tabs = []
+        try {
+            request = `http://timewars.online:4000/getpost?id=${posts[state.active].id}`;
+            tabs = (await axios.get(request)).data;
+        }catch (e){}
 
         setState((prev) => {
             return {
@@ -28,10 +32,68 @@ function App() {
         getData()
     }, [getData]);
 
+    const swapActive = useCallback((amount) => {
+        setState((prev) => {
+            if (prev.active + amount >= 0) {
+                return {
+                    ...prev,
+                    active: prev.active + amount
+                }
+            } else {
+                return {
+                    ...prev,
+                    active: 0
+                }
+            }
+        })
+    },[])
+
+    const addPost = useCallback(async (title)=>{
+        const response = await axios.post("http://timewars.online:4000/addpost",{
+            title
+        });
+        getData();
+        return response
+    },[swapActive])
+
+    const removePost = useCallback(async (id)=>{
+        const response = await axios.post("http://timewars.online:4000/removepost",{
+            id
+        });
+        getData()
+        return response
+    },[swapActive])
+
+    const addTextTab = useCallback(async (post_id, text)=>{
+        const response = await axios.post("http://timewars.online:4000/addtexttab",{
+            post_id,
+            text
+        });
+        getData();
+        return response
+    },[getData])
+
+    const removeTab = useCallback( async (id) => {
+        const response = await axios.post("http://timewars.online:4000/removetab",{
+            id
+        });
+        getData();
+        return response
+    },[])
+
 
     return (
         <div className="App">
-
+            <PostsList
+                posts={state.posts}
+                active={state.active}
+                swapActive={swapActive}
+                addPost={addPost}
+                tabs={state.tabs}
+                removePost={removePost}
+                addTextTab={addTextTab}
+                removeTab={removeTab}
+            />
         </div>
     );
 }

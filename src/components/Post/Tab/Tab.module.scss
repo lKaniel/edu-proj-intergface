@@ -1,0 +1,33 @@
+.Tab {
+  width: 100%;
+  height: auto;
+  background: rgba(0, 0, 0, .02);
+
+  .Remove {
+    width: calc(100% - 20px);
+    height: 30px;
+    padding: 10px;
+    font-size: 20px;
+    background: #D64933;
+    font-weight: 650;
+    color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+  }
+}
+
+.Tab.clicked{
+  background: rgba(0,0,0,.2);
+}
+
+.Tab.text {
+  width: 100%;
+
+  .Text {
+    padding: 50px;
+    font-size: 20px;
+    color: rgba(0, 0, 0, .9);
+  }
+}
+
