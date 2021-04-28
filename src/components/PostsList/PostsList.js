@@ -16,8 +16,8 @@ const PostsList = ({posts, active, swapActive, addPost, removePost, tabs, addTex
 
     return (
         <>
-            <div className={classes.Button} onClick={()=>{swapActive(-1)}}/>
-            <div className={classes.Button + " " + classes.right} onClick={()=>{swapActive(1)}}/>
+            {/*<div className={classes.Button} onClick={()=>{swapActive(-1)}}/>*/}
+            {/*<div className={classes.Button + " " + classes.right} onClick={()=>{swapActive(1)}}/>*/}
             <div
                 className={classes.PostsList}
                 style={{

@@ -7,6 +7,8 @@ const PostCreator = ({swapActive, addPost}) => {
         text: ""
     })
 
+    const textRef = useRef();
+
     const onType = useCallback((event)=>{
         const value = event.target.value;
         setState(prev => {
@@ -20,10 +22,11 @@ const PostCreator = ({swapActive, addPost}) => {
     return (
         <div className={classes.PostWrap}>
             <div className={classes.Post}>
-                <input type={"text"} name={"title"} onChange={event => onType(event)}/>
+                <input type={"text"} name={"title"} onChange={event => onType(event)} ref={textRef}/>
                 <input type={"submit"} name={"create"} value={"+"} onClick={()=>{
                     if (state.text !== "") {
                         addPost(state.text)
+                        textRef.current.value = "";
                         setState((prev) => {
                             return {
                                 ...prev,

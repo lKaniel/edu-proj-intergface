@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 import PostsList from "./components/PostsList/PostsList";
+import Header from "./components/Header/Header";
 
 function App() {
 
@@ -84,6 +85,7 @@ function App() {
 
     return (
         <div className="App">
+            <Header/>
             <PostsList
                 posts={state.posts}
                 active={state.active}
