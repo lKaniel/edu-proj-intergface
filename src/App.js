@@ -12,11 +12,11 @@ function App() {
     })
 
     const getData = useCallback(async () => {
-        let request = `http://timewars.online:4000/getposts`;
+        let request = `http://localhost:4000/getposts`;
         const posts = (await axios.get(request)).data;
         let tabs = []
         try {
-            request = `http://timewars.online:4000/getpost?id=${posts[state.active].id}`;
+            request = `http://localhost:4000/getpost?id=${posts[state.active].id}`;
             tabs = (await axios.get(request)).data;
         }catch (e){}
 
@@ -50,7 +50,7 @@ function App() {
     },[])
 
     const addPost = useCallback(async (title)=>{
-        const response = await axios.post("http://timewars.online:4000/addpost",{
+        const response = await axios.post("http://localhost:4000/addpost",{
             title
         });
         getData();
@@ -58,7 +58,7 @@ function App() {
     },[swapActive])
 
     const removePost = useCallback(async (id)=>{
-        const response = await axios.post("http://timewars.online:4000/removepost",{
+        const response = await axios.post("http://localhost:4000/removepost",{
             id
         });
         getData()
@@ -66,7 +66,7 @@ function App() {
     },[swapActive])
 
     const addTextTab = useCallback(async (post_id, text)=>{
-        const response = await axios.post("http://timewars.online:4000/addtexttab",{
+        const response = await axios.post("http://localhost:4000/addtexttab",{
             post_id,
             text
         });
@@ -75,7 +75,7 @@ function App() {
     },[getData])
 
     const removeTab = useCallback( async (id) => {
-        const response = await axios.post("http://timewars.online:4000/removetab",{
+        const response = await axios.post("http://localhost:4000/removetab",{
             id
         });
         getData();
