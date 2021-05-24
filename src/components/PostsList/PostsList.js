@@ -4,7 +4,6 @@ import PostCreator from "../PostCreator/PostCreator";
 import Post from "../Post/Post";
 
 const PostsList = ({posts, active, swapActive, addPost, removePost, tabs, addTextTab, removeTab}) => {
-
     posts = posts.map((element, index) => {
         return (
             <Post key={element.id} tabs={element.id === posts[active]?.id ? tabs : []} title={element.title} removePost={()=>{removePost(element.id)}} id={element.id} addTextTab={addTextTab} removeTab={removeTab}/>
