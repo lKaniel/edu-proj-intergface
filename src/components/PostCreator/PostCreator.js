@@ -1,7 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react';
 import classes from "./PostCreator.module.scss";
 
-const PostCreator = ({swapActive, addPost}) => {
+const PostCreator = ({addPost}) => {
 
     const [state, setState] = useState({
         text: ""
@@ -9,33 +9,34 @@ const PostCreator = ({swapActive, addPost}) => {
 
     const textRef = useRef();
 
-    const onType = useCallback((event)=>{
+    const onType = useCallback((event) => {
         const value = event.target.value;
         setState(prev => {
-            return{
+            return {
                 ...prev,
                 text: value
             }
         })
-    },[])
+    }, [])
 
     return (
-        <div className={classes.PostWrap}>
-            <div className={classes.Post}>
+        <div className={classes.MiniPost}>
+            <form onSubmit={(event) => {
+                event.preventDefault()
+                if (state.text !== "") {
+                    addPost(state.text)
+                    textRef.current.value = "";
+                    setState((prev) => {
+                        return {
+                            ...prev,
+                            text: ""
+                        }
+                    })
+                }
+            }}>
                 <input type={"text"} name={"title"} onChange={event => onType(event)} ref={textRef}/>
-                <input type={"submit"} name={"create"} value={"+"} onClick={()=>{
-                    if (state.text !== "") {
-                        addPost(state.text)
-                        textRef.current.value = "";
-                        setState((prev) => {
-                            return {
-                                ...prev,
-                                text: ""
-                            }
-                        })
-                    }
-                }}/>
-            </div>
+                <input hidden={true} type={"submit"} name={"create"} value={"+"}/>
+            </form>
         </div>
     );
 };

@@ -3,7 +3,7 @@ import classes from "./Post.module.scss"
 import TabCreator from "./TabCreator/TabCreator";
 import Tab from "./Tab/Tab";
 
-const Post = ({title, tabs, removePost, id, addTextTab, removeTab}) => {
+const Post = ({title, tabs, id, addTextTab, removeTab}) => {
 
     tabs = tabs.map((element, index) => {
         return (
@@ -19,7 +19,6 @@ const Post = ({title, tabs, removePost, id, addTextTab, removeTab}) => {
                 </div>
                 {tabs}
                 <TabCreator post_id={id} addTextTab={addTextTab}/>
-                <div className={classes.Remove} onClick={removePost}>Remove</div>
             </div>
         </div>
     );

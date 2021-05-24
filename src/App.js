@@ -3,6 +3,7 @@ import axios from "axios";
 import PostsList from "./components/PostsList/PostsList";
 import Header from "./components/Header/Header";
 import CategoriesList from "./components/CategoriesList/CategoriesList";
+import Post from "./components/Post/Post";
 
 function App() {
 
@@ -30,8 +31,6 @@ function App() {
     const getPostsData = useCallback(async (activeCategoryId) => {
         let request = `http://localhost:4000/getcategory?id=${activeCategoryId}`;
         const posts = (await axios.get(request)).data;
-        console.log(request)
-        console.log(posts)
 
         setState((prev) => {
             return {
@@ -42,13 +41,13 @@ function App() {
     }, [])
 
     const getTabsData = useCallback(async (activeTabId) => {
-        let request = `http://localhost:4000/getcategory?id=${activeTabId}`;
-        const posts = (await axios.get(request)).data;
+        let request = `http://localhost:4000/getpost?id=${activeTabId}`;
+        const tabs = (await axios.get(request)).data;
 
         setState((prev) => {
             return {
                 ...prev,
-                posts
+                tabs
             }
         })
     }, [])
@@ -56,6 +55,25 @@ function App() {
     useEffect(() => {
         getCategoriesData()
     }, [getCategoriesData]);
+
+    const goBack = useCallback(()=>{
+        setState((prev)=>{
+            if (prev.activePostId){
+                return{
+                    ...prev,
+                    activePostId: null,
+                    activePostTitle: null
+                }
+            }
+            if (prev.activeCategoryId){
+                return{
+                    ...prev,
+                    activeCategoryId: null,
+                    activeCategoryTitle: null
+                }
+            }
+        })
+    })
 
     const addCategory = useCallback(async (title) => {
         const response = await axios.post("http://localhost:4000/addcategory", {
@@ -74,7 +92,6 @@ function App() {
     }, [])
 
     const selectCategory = useCallback(async (id, title) => {
-        console.log(id)
         setState((prev) => {
             return {
                 ...prev,
@@ -85,20 +102,15 @@ function App() {
         getPostsData(id);
     }, [])
 
-    const swapActive = useCallback((amount) => {
+    const selectPost = useCallback(async (id, title) => {
         setState((prev) => {
-            if (prev.activePostId + amount >= 0) {
-                return {
-                    ...prev,
-                    activePostId: prev.activePostId + amount
-                }
-            } else {
-                return {
-                    ...prev,
-                    activePostId: null
-                }
+            return {
+                ...prev,
+                activePostId: id,
+                activePostTitle: title
             }
         })
+        getTabsData(id);
     }, [])
 
     const addPost = useCallback(async (title) => {
@@ -139,23 +151,28 @@ function App() {
 
     return (
         <div className="App">
-            <Header/>
+            <Header goBack={goBack} categoryTitle={state.activeCategoryTitle} postTitle={state.activePostTitle}/>
             {!state.activeCategoryId ?
                 <CategoriesList categories={state.categories} addCategory={addCategory} removeCategory={removeCategory}
                                 selectCategory={selectCategory}/> : null
             }
-            {state.activeCategoryId ?
+            {state.activeCategoryId && !state.activePostId ?
                 <PostsList
                     posts={state.posts}
-                    active={state.activePostId}
-                    swapActive={swapActive}
+                    selectPost={selectPost}
                     addPost={addPost}
-                    tabs={state.tabs}
                     removePost={removePost}
-                    addTextTab={addTextTab}
-                    removeTab={removeTab}
                 /> : null
             }
+            {state.activePostId ?
+                <Post
+                    id={state.activePostId}
+                    title={state.activePostTitle}
+                    tabs={state.tabs}
+                    addTextTab={addTextTab}
+                    removeTab={removeTab}
+                />
+                : null}
 
 
         </div>
