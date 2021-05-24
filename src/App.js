@@ -2,32 +2,55 @@ import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 import PostsList from "./components/PostsList/PostsList";
 import Header from "./components/Header/Header";
+import CategoriesList from "./components/CategoriesList/CategoriesList";
 
 function App() {
 
     const [state, setState] = useState({
+        categories: [],
         posts: [],
         tabs: [],
-        active: 0
+        activeCategoryId: null,
+        activeCategoryTitle: null,
+        activePostId: null,
+        activePostTitle: null
     })
 
     const getData = useCallback(async () => {
-        let request = `http://localhost:4000/getposts`;
-        const posts = (await axios.get(request)).data;
+        if (state.activeCategoryId === null) {
+            let request = `http://localhost:4000/getcategories`;
+            const categories = (await axios.get(request)).data;
+            setState((prev) => {
+                return {
+                    ...prev,
+                    categories
+                }
+            })
+            return
+        }
+        if (state.activePostId === null) {
+            let request = `http://localhost:4000/getcategory?id=1${state.activeCategoryId}`;
+            const posts = (await axios.get(request)).data;
+            setState((prev) => {
+                return {
+                    ...prev,
+                    posts
+                }
+            })
+            return
+        }
         let tabs = []
-        try {
-            request = `http://localhost:4000/getpost?id=${posts[state.active].id}`;
-            tabs = (await axios.get(request)).data;
-        }catch (e){}
-
+        let request = `http://localhost:4000/getpost?id=${posts[state.activePostId].id}`;
+        tabs = (await axios.get(request)).data;
         setState((prev) => {
             return {
                 ...prev,
-                posts: posts,
-                tabs: tabs
+                tabs
             }
         })
-    }, [state.active])
+
+
+    }, [state.activePostId])
 
     useEffect(() => {
         getData()
@@ -86,16 +109,17 @@ function App() {
     return (
         <div className="App">
             <Header/>
-            <PostsList
-                posts={state.posts}
-                active={state.active}
-                swapActive={swapActive}
-                addPost={addPost}
-                tabs={state.tabs}
-                removePost={removePost}
-                addTextTab={addTextTab}
-                removeTab={removeTab}
-            />
+            <CategoriesList categories={state.categories}/>
+            {/*<PostsList*/}
+            {/*    posts={state.posts}*/}
+            {/*    active={state.activePostId}*/}
+            {/*    swapActive={swapActive}*/}
+            {/*    addPost={addPost}*/}
+            {/*    tabs={state.tabs}*/}
+            {/*    removePost={removePost}*/}
+            {/*    addTextTab={addTextTab}*/}
+            {/*    removeTab={removeTab}*/}
+            {/*/>*/}
         </div>
     );
 }
